@@ -8,7 +8,7 @@ const register = async (req, res) => {
   const values = [email, userName, password];
   try {
     const result = await pool.query(query, values);
-    return res.json(result.rows);
+    return res.status(201).json(result.rows);
   } catch (e) {
     console.error(e);
   }
