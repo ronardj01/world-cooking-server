@@ -2,13 +2,16 @@ const express = require("express");
 const { Pool } = require("pg");
 require("dotenv").config();
 
+//initializing express app.
 const app = express();
+
+//parse requests of content-type - application-json
 app.use(express.json());
 
 //routes
 const authentication = require("./app/routes/authentication");
 
-//endpoints
+//ENDPOINTS
 // test endpoint
 app.get("/", (req, res) => {
   res.send(
@@ -16,9 +19,10 @@ app.get("/", (req, res) => {
   );
 });
 
-//register
+//register endpoint
 app.use("/authentication", authentication);
 
+//set port, listen for request
 const { PORT } = process.env;
 app.listen(PORT, () => {
   console.log(`server is listening on port ${PORT}`);
