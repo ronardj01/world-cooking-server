@@ -10,10 +10,13 @@ const registerControl = async (email, userName, password) => {
     control = false;
   } else {
     const data = await pool.query(query, [userName, email]);
-    const userData = data.rows[0];
 
-    if (userData.user_name == userName || userData.user_email == email) {
-      control = "user already exists";
+    if (data.rowCount > 0) {
+      const userData = data.rows[0];
+
+      if (userData.user_name == userName || userData.user_email == email) {
+        control = "user already exists";
+      }
     }
   }
   return control;
