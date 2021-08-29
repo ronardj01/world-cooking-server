@@ -25,11 +25,11 @@ const authControl = async (email, userName, password, authType) => {
       if (data.rowCount > 0) {
         const userData = data.rows[0];
         if (userData.user_name == userName || userData.user_email == email) {
-          const result = isSignupType
+          const queryResult = isSignupType
             ? "user already exists" // return a warning if is signup type
             : userData; // return the data to proceed with the login
 
-          return result;
+          return queryResult;
         }
       }
     } catch (error) {
