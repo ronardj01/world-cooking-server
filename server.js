@@ -1,5 +1,4 @@
 const express = require("express");
-const { Pool } = require("pg");
 require("dotenv").config();
 
 //initializing express app.
@@ -19,7 +18,7 @@ app.get("/", (req, res) => {
   );
 });
 
-//register endpoint
+//register register / login endpoints
 app.use("/authentication", authentication);
 
 //set port, listen for request

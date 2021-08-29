@@ -12,11 +12,19 @@ const register = async (req, res) => {
   const control = await authControl(email, userName, password, "signup");
 
   if (!control) {
-    return res.status(400).send("All the fields must be completed");
+    return res.status(400).json({
+      error: "All the fields must be completed",
+      isAuthenticated: false,
+    });
   }
 
   if (control == "user already exists") {
-    return res.status(409).send("username or email already exists!");
+    return res
+      .status(409)
+      .json({
+        error: "username or email already exists!",
+        isAuthenticated: false,
+      });
   }
 
   const salt = await bcrypt.genSalt(10); //hash password before saving it to database
@@ -30,8 +38,10 @@ const register = async (req, res) => {
     const newUserId = result.rows[0].user_id; //brings the new user id from the "returning" query
     const jwtToken = generateJWT(newUserId); //generate jwtToken using the newUserId
 
-    res.cookie("token", jwtToken, { httpOnly: true }); //response the token in the cookies
-    return res.status(201).json(result.rows);
+    res.cookie("token", jwtToken, { httpOnly: true }); //response token in the cookies
+    return res
+      .status(201)
+      .json({ result: result.rows[0], isAuthenticated: true });
   } catch (error) {
     console.log(error);
   }
