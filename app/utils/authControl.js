@@ -1,12 +1,21 @@
 const pool = require("./poolService");
 
-const registerControl = async (email, userName, password) => {
+const authControl = async (email, userName, password, authType) => {
   let control = true;
+  let isAllFieldCompleted = true;
 
   const query = `select user_name, user_email from users where 
   user_name = $1 or user_email = $2`;
 
-  if (!email || !userName || !password) {
+  const isSignupType = authType == "signup" ? true : false;
+
+  if (isSignupType) {
+    isAllFieldsCompleted = email && userName && password ? true : false;
+  } else {
+    isAllFieldsCompleted = userName && password ? true : false;
+  }
+
+  if (!isAllFieldsCompleted) {
     control = false;
   } else {
     const data = await pool.query(query, [userName, email]);
@@ -15,11 +24,11 @@ const registerControl = async (email, userName, password) => {
       const userData = data.rows[0];
 
       if (userData.user_name == userName || userData.user_email == email) {
-        control = "user already exists";
+        return "user already exists";
       }
     }
   }
   return control;
 };
 
-module.exports = registerControl;
+module.exports = authControl;

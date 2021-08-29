@@ -9,6 +9,7 @@ const pool = new Pool({
   port: process.env.PG_PORT,
   extra: {
     // Este "extra {}" es para poder acceder a heroku
+    //tambien debes agregar PGSSLMODE=no-verify en las variables de entorno de heroku
     ssl: true,
   },
 });

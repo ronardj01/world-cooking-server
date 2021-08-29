@@ -1,7 +1,7 @@
 const pool = require("../../utils/poolService.js");
 const bcrypt = require("bcrypt");
 const generateJWT = require("../../utils/generateJWT");
-const registerControl = require("../../utils/registerControl");
+const authControl = require("../../utils/authControl");
 
 const query = `insert into users (user_email, user_name, user_password)
  values (lower($1), lower($2), $3) returning user_id, user_name`;
@@ -9,7 +9,7 @@ const query = `insert into users (user_email, user_name, user_password)
 const register = async (req, res) => {
   const { email, userName, password } = req.body;
 
-  const control = await registerControl(email, userName, password);
+  const control = await authControl(email, userName, password, "signup");
 
   if (!control) {
     return res.status(400).send("All the fields must be completed");
