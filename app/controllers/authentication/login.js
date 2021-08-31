@@ -20,7 +20,8 @@ const login = async (req, res) => {
       .json({ error: "email does not exist", isAuthenticated: false });
   }
 
-  const isValidPassword = await bcrypt.compare(password, control.user_password); //compare the password with the password hashed in database
+  //compare the password with the password hashed in database and return a boolean
+  const isValidPassword = await bcrypt.compare(password, control.user_password);
 
   if (!isValidPassword) {
     return res
@@ -28,7 +29,7 @@ const login = async (req, res) => {
       .json({ error: "Invalid password", isAuthenticated: false });
   }
 
-  const userId = control.user_id;
+  const userId = control.user_id; //user id from database
   const jwtToken = generateJWT(userId); //generate jwtToken using the userId
 
   res.cookie("token", jwtToken, { httpOnly: true }); //response token in the cookies

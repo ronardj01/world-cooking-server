@@ -1,11 +1,19 @@
 const express = require("express");
 require("dotenv").config();
+const cors = require("cors");
 
 //initializing express app.
 const app = express();
 
 //parse requests of content-type - application-json
 app.use(express.json());
+
+//cors setting
+const corsConfig = {
+  origin: process.env.FRONT_URL, //allow an especific url to acces
+  credentials: true, // allow pass headers
+};
+app.use(cors(corsConfig)); //enable cors
 
 //routes
 const authentication = require("./app/routes/authentication");
